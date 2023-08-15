@@ -37,6 +37,7 @@ class CaixaDaLanchonete {
                 return "Quantidade inválida!";
             }
     
+            
             // - Caso item extra seja informado num pedido que não tenha o respectivo item principal
             //   apresentar mensagem "Item extra não pode ser pedido sem o principal".
             // - Combos não são considerados como item principal.
