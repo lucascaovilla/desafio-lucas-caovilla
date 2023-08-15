@@ -23,8 +23,13 @@ describe('CaixaDaLanchonete', () => {
     ])('compra simples em %p deve resultar em %p', validaTeste);
 
     test.each([
-        ['credito', 'R$ 11,85', ['cafe,1', 'sanduiche,1', 'queijo,1']],
         ['debito', 'R$ 11,50', ['cafe,1', 'sanduiche,1', 'queijo,1']],
+        ['credito', 'R$ 11,85', ['cafe,1', 'sanduiche,1', 'queijo,1']],
+        ['dinheiro', 'R$ 10,92', ['cafe,1', 'sanduiche,1', 'queijo,1']],
+
+        ['debito', 'R$ 22,50', ['cafe,2', 'sanduiche,1', 'queijo,5']],
+        ['credito', 'R$ 23,18', ['cafe,2', 'sanduiche,1', 'queijo,5']],
+        ['dinheiro', 'R$ 21,38', ['cafe,2', 'sanduiche,1', 'queijo,5']],
     ])('compra de 3 itens em %p deve resultar em %p', validaTeste);
 
     test.each([
@@ -34,18 +39,40 @@ describe('CaixaDaLanchonete', () => {
     ])('compra de múltiplas quantidades em %p deve resultar em %p', validaTeste);
 
     test.each([
+        ['com quantidade zero', 'debito', 'Quantidade inválida!', ['cafe,0']],
+        ['com quantidade zero', 'credito', 'Quantidade inválida!', ['cafe,0']],
         ['com quantidade zero', 'dinheiro', 'Quantidade inválida!', ['cafe,0']],
+    
+        ['com um valor', 'debito', 'Item inválido!', ['1']],
         ['com um valor', 'credito', 'Item inválido!', ['1']],
+        ['com um valor', 'dinheiro', 'Item inválido!', ['1']],
+
         ['com código inexistente', 'debito', 'Item inválido!', ['pizza, 1']],
+        ['com código inexistente', 'credito', 'Item inválido!', ['pizza, 1']],
+        ['com código inexistente', 'dinheiro', 'Item inválido!', ['pizza, 1']],
+
         ['com forma de pagamento inválida', 'especie', 'Forma de pagamento inválida!', ['cafe, 1']],
+        ['com forma de pagamento inválida', 'especie', 'Forma de pagamento inválida!', ['sanduiche, 1']],
+        ['com forma de pagamento inválida', 'especie', 'Forma de pagamento inválida!', ['combo1, 1']],
     ])('compra %p em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
         validaTeste(formaDePagamento, resultadoEsperado, itens));
 
     test.each([
+        ['chantily', 'debito', 'Item extra não pode ser pedido sem o principal', ['chantily,1']],
+        ['chantily', 'credito', 'Item extra não pode ser pedido sem o principal', ['chantily,1']],
         ['chantily', 'dinheiro', 'Item extra não pode ser pedido sem o principal', ['chantily,1']],
+
+        ['queijo', 'debito', 'Item extra não pode ser pedido sem o principal', ['queijo,1']],
         ['queijo', 'credito', 'Item extra não pode ser pedido sem o principal', ['queijo,1']],
+        ['queijo', 'dinheiro', 'Item extra não pode ser pedido sem o principal', ['queijo,1']],
+        
+        ['chantily com outro item', 'debito', 'Item extra não pode ser pedido sem o principal', ['chantily,1', 'sanduiche,1']],
         ['chantily com outro item', 'credito', 'Item extra não pode ser pedido sem o principal', ['chantily,1', 'sanduiche,1']],
+        ['chantily com outro item', 'dinheiro', 'Item extra não pode ser pedido sem o principal', ['chantily,1', 'sanduiche,1']],
+        
         ['queijo com outro item', 'debito', 'Item extra não pode ser pedido sem o principal', ['cafe,1', 'queijo,1']],
+        ['queijo com outro item', 'credito', 'Item extra não pode ser pedido sem o principal', ['cafe,1', 'queijo,1']],
+        ['queijo com outro item', 'dinheiro', 'Item extra não pode ser pedido sem o principal', ['cafe,1', 'queijo,1']],
     ])('compra %p em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
         validaTeste(formaDePagamento, resultadoEsperado, itens));
 });
